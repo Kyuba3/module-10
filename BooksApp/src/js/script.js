@@ -34,17 +34,21 @@
   const favoriteBooks = [];
 
   const initActions = function(){
-
     const allBooks = document.querySelectorAll(select.containerOf.bookLink);
     console.log(allBooks);
-    for(let bookId in allBooks){
-      const book = allBooks[bookId];
-      console.log(book);
+    for(let book of allBooks){
       book.addEventListener('dblclick', function(event){
         event.preventDefault();
-        book.classList.add('favorite');
-        let bookAtribute = book.getElementById('data-id');
-        favoriteBooks.push(bookAtribute);
+
+        let bookAtribute = book.getAttribute('data-id');
+        if(favoriteBooks.includes(bookAtribute)){
+          const index = favoriteBooks.indexOf(bookAtribute);
+          favoriteBooks.splice(index, 1);
+          book.classList.remove('favorite');
+        } else {
+          favoriteBooks.push(bookAtribute);
+          book.classList.add('favorite');
+        }
       });
     }
 
