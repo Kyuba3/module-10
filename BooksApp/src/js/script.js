@@ -9,6 +9,13 @@
       book: '.books-list',
       bookLink: '.book__image',
     },
+    book: {
+      image: '.books-list .book__image',
+    },
+    filters: {
+      filters: '.filters',
+    }
+
   };
 
   const templates = {
@@ -31,28 +38,45 @@
  
   render();
   
-  const favoriteBooks = [];
+
+  const filters = [];
+  const filtersValue = document.querySelector(select.filters.filters);
 
   const initActions = function(){
-    const allBooks = document.querySelectorAll(select.containerOf.bookLink);
-    console.log(allBooks);
-    for(let book of allBooks){
-      book.addEventListener('dblclick', function(event){
-        event.preventDefault();
-
-        let bookAtribute = book.getAttribute('data-id');
-        if(favoriteBooks.includes(bookAtribute)){
-          const index = favoriteBooks.indexOf(bookAtribute);
-          favoriteBooks.splice(index, 1);
-          book.classList.remove('favorite');
-        } else {
-          favoriteBooks.push(bookAtribute);
-          book.classList.add('favorite');
+    const favoriteBooks = [];
+    const allBooks = document.querySelectorAll(select.containerOf.book);
+    
+    for(const book of allBooks){
+      book.addEventListener('click', function(event){
+        if(event.target.offsetParent.classList.contains('.book__image')){
+          event.preventDefault();
+          const bookAtribute = book.getAttribute('data-id');       
+          
+          if(!favoriteBooks.includes(bookAtribute)){
+            book.classList.add('favorite');
+            favoriteBooks.push(bookAtribute);
+          } else {
+            book.classList.remove('favorite');
+            const index = favoriteBooks.indexOf(bookAtribute);
+            favoriteBooks.splice(index, 1);
+          }
+          console.log(book, favoriteBooks);
         }
       });
     }
 
-    
+    filtersValue.addEventListener('click', function(event){
+      if(event.target.tagName == 'INPUT' && event.target.type == 'checkbox' && event.target.name == 'filter'){
+        console.log(event.target.value);
+        if(event.target.checked){
+          filters.push(event.target.value);
+        } else {
+          filters.splice(filters.indexOf(event.target.value), 1);
+        }
+        console.log(filters);
+      }
+
+    });    
   };
 
   initActions();
