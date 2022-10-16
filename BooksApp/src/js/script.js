@@ -75,10 +75,27 @@
         }
         console.log(filters);
       }
+      filterFunction();
 
     });    
   };
 
+  const filterFunction = function(){
+    for(const book of dataSource.books){
+      let shouldBeHidden = false;
+      for(const filter of filters){
+        if(!book.details[filter]){
+          shouldBeHidden = true;
+          break;
+        }
+      }  
+      if(shouldBeHidden){
+        document.querySelector(`[data-id="${book.id}"]`).classList.add('hidden');     
+      } else {
+        document.querySelector(`[data-id="${book.id}"]`).classList.remove('hidden');
+      }
+    } 
+  };
   initActions();
 
 }
